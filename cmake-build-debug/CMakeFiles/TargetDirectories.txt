@@ -1,0 +1,13 @@
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/t.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/2123.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/19122.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/3.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/2013.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/16121.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/2213.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/2221.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/3-opt.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/3-opt-fix.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/22211.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/10201/CLionProjects/usaco_cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
