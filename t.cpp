@@ -1,11 +1,19 @@
 #include <iostream>
-#include <string>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+
 using namespace std;
-int main() {
-    long long k = 1000000000;
-    long long x = 14339;
-    cout<<2*k<<endl;
-    cout<<x*x<<endl;
-    int s = (2*k + x*x - x) / 2;
-    cout<<s<<endl;
+
+int main()
+{
+    vector<int> arr = { 3, 4, 9, 100};
+    int target = 99;
+
+    vector<int>::iterator result = find(arr.begin(), arr.end(), target); //查找target
+    int index = distance(arr.begin(), result);
+
+    cout << "target索引为:" << index << endl;
+
+    system("pause");
 }
