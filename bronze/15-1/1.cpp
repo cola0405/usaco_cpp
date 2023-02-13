@@ -6,32 +6,28 @@
 using namespace std;
 
 int main(){
-
     freopen("cowroute.in", "r", stdin);
     freopen("cowroute.out", "w", stdout);
 
     int A,B,N;
     cin>>A>>B>>N;
-
-    // find best way
     int minCost = INT_MAX;
 
-    for(int r=0; r<N; r++){
-        int cost, num;
-        cin>>cost>>num;
-        vector<int> cities(num);
-        for(int w=0; w<num; w++){
-            cin>>cities[w];
-        }
+    for(int i=0; i<N; i++){
+        int cost, m;
+        cin>>cost>>m;
 
-        // find A_inx and B_inx
-        int A_inx = find(cities.begin(), cities.end(), A) - cities.begin();
-        int B_inx = find(cities.begin(), cities.end(), B) - cities.begin();
-        if(A_inx == num or B_inx == num){
-            continue;
+        int A_index=-1, B_index=-1;
+        int city;
+        for(int k=0; k<m; k++){
+            cin>>city;
+            if(city == A){
+                A_index = k;
+            }else if(city == B){
+                B_index = k;
+            }
         }
-
-        if(A_inx < B_inx){
+        if((A_index != -1 && B_index != -1) && (A_index < B_index)){
             minCost = min(cost, minCost);
         }
     }
