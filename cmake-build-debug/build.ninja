@@ -140,37 +140,37 @@ build 19122.exe: CXX_EXECUTABLE_LINKER__19122_Debug CMakeFiles/19122.dir/bronze/
   TARGET_PDB = 19122.exe.dbg
 
 # =============================================================================
-# Object build statements for EXECUTABLE target 3
+# Object build statements for EXECUTABLE target 15123
 
 
 #############################################
-# Order-only phony target for 3
+# Order-only phony target for 15123
 
-build cmake_object_order_depends_target_3: phony || CMakeFiles/3.dir
+build cmake_object_order_depends_target_15123: phony || CMakeFiles/15123.dir
 
-build CMakeFiles/3.dir/bronze/20-1/3.cpp.obj: CXX_COMPILER__3_Debug D$:/project/c++/usaco_cpp/bronze/20-1/3.cpp || cmake_object_order_depends_target_3
-  DEP_FILE = CMakeFiles\3.dir\bronze\20-1\3.cpp.obj.d
+build CMakeFiles/15123.dir/bronze/15-12/3.cpp.obj: CXX_COMPILER__15123_Debug D$:/project/c++/usaco_cpp/bronze/15-12/3.cpp || cmake_object_order_depends_target_15123
+  DEP_FILE = CMakeFiles\15123.dir\bronze\15-12\3.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\3.dir
-  OBJECT_FILE_DIR = CMakeFiles\3.dir\bronze\20-1
+  OBJECT_DIR = CMakeFiles\15123.dir
+  OBJECT_FILE_DIR = CMakeFiles\15123.dir\bronze\15-12
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target 3
+# Link build statements for EXECUTABLE target 15123
 
 
 #############################################
-# Link the executable 3.exe
+# Link the executable 15123.exe
 
-build 3.exe: CXX_EXECUTABLE_LINKER__3_Debug CMakeFiles/3.dir/bronze/20-1/3.cpp.obj
+build 15123.exe: CXX_EXECUTABLE_LINKER__15123_Debug CMakeFiles/15123.dir/bronze/15-12/3.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\3.dir
+  OBJECT_DIR = CMakeFiles\15123.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_FILE = 3.exe
-  TARGET_IMPLIB = lib3.dll.a
-  TARGET_PDB = 3.exe.dbg
+  TARGET_FILE = 15123.exe
+  TARGET_IMPLIB = lib15123.dll.a
+  TARGET_PDB = 15123.exe.dbg
 
 # =============================================================================
 # Object build statements for EXECUTABLE target 2013
@@ -469,6 +469,204 @@ build 1511.exe: CXX_EXECUTABLE_LINKER__1511_Debug CMakeFiles/1511.dir/bronze/15-
   TARGET_IMPLIB = lib1511.dll.a
   TARGET_PDB = 1511.exe.dbg
 
+# =============================================================================
+# Object build statements for EXECUTABLE target 1933
+
+
+#############################################
+# Order-only phony target for 1933
+
+build cmake_object_order_depends_target_1933: phony || CMakeFiles/1933.dir
+
+build CMakeFiles/1933.dir/bronze/19-3/1933.cpp.obj: CXX_COMPILER__1933_Debug D$:/project/c++/usaco_cpp/bronze/19-3/1933.cpp || cmake_object_order_depends_target_1933
+  DEP_FILE = CMakeFiles\1933.dir\bronze\19-3\1933.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\1933.dir
+  OBJECT_FILE_DIR = CMakeFiles\1933.dir\bronze\19-3
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target 1933
+
+
+#############################################
+# Link the executable 1933.exe
+
+build 1933.exe: CXX_EXECUTABLE_LINKER__1933_Debug CMakeFiles/1933.dir/bronze/19-3/1933.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\1933.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = 1933.exe
+  TARGET_IMPLIB = lib1933.dll.a
+  TARGET_PDB = 1933.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target 2
+
+
+#############################################
+# Order-only phony target for 2
+
+build cmake_object_order_depends_target_2: phony || CMakeFiles/2.dir
+
+build CMakeFiles/2.dir/bronze/23-1/2312.cpp.obj: CXX_COMPILER__2_Debug D$:/project/c++/usaco_cpp/bronze/23-1/2312.cpp || cmake_object_order_depends_target_2
+  DEP_FILE = CMakeFiles\2.dir\bronze\23-1\2312.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\2.dir
+  OBJECT_FILE_DIR = CMakeFiles\2.dir\bronze\23-1
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target 2
+
+
+#############################################
+# Link the executable 2.exe
+
+build 2.exe: CXX_EXECUTABLE_LINKER__2_Debug CMakeFiles/2.dir/bronze/23-1/2312.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\2.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = 2.exe
+  TARGET_IMPLIB = lib2.dll.a
+  TARGET_PDB = 2.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target 2312
+
+
+#############################################
+# Order-only phony target for 2312
+
+build cmake_object_order_depends_target_2312: phony || CMakeFiles/2312.dir
+
+build CMakeFiles/2312.dir/bronze/23-1/2312.cpp.obj: CXX_COMPILER__2312_Debug D$:/project/c++/usaco_cpp/bronze/23-1/2312.cpp || cmake_object_order_depends_target_2312
+  DEP_FILE = CMakeFiles\2312.dir\bronze\23-1\2312.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\2312.dir
+  OBJECT_FILE_DIR = CMakeFiles\2312.dir\bronze\23-1
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target 2312
+
+
+#############################################
+# Link the executable 2312.exe
+
+build 2312.exe: CXX_EXECUTABLE_LINKER__2312_Debug CMakeFiles/2312.dir/bronze/23-1/2312.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\2312.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = 2312.exe
+  TARGET_IMPLIB = lib2312.dll.a
+  TARGET_PDB = 2312.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target 15121
+
+
+#############################################
+# Order-only phony target for 15121
+
+build cmake_object_order_depends_target_15121: phony || CMakeFiles/15121.dir
+
+build CMakeFiles/15121.dir/bronze/15-12/15121.cpp.obj: CXX_COMPILER__15121_Debug D$:/project/c++/usaco_cpp/bronze/15-12/15121.cpp || cmake_object_order_depends_target_15121
+  DEP_FILE = CMakeFiles\15121.dir\bronze\15-12\15121.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\15121.dir
+  OBJECT_FILE_DIR = CMakeFiles\15121.dir\bronze\15-12
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target 15121
+
+
+#############################################
+# Link the executable 15121.exe
+
+build 15121.exe: CXX_EXECUTABLE_LINKER__15121_Debug CMakeFiles/15121.dir/bronze/15-12/15121.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\15121.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = 15121.exe
+  TARGET_IMPLIB = lib15121.dll.a
+  TARGET_PDB = 15121.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target t1
+
+
+#############################################
+# Order-only phony target for t1
+
+build cmake_object_order_depends_target_t1: phony || CMakeFiles/t1.dir
+
+build CMakeFiles/t1.dir/t1.cpp.obj: CXX_COMPILER__t1_Debug D$:/project/c++/usaco_cpp/t1.cpp || cmake_object_order_depends_target_t1
+  DEP_FILE = CMakeFiles\t1.dir\t1.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\t1.dir
+  OBJECT_FILE_DIR = CMakeFiles\t1.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target t1
+
+
+#############################################
+# Link the executable t1.exe
+
+build t1.exe: CXX_EXECUTABLE_LINKER__t1_Debug CMakeFiles/t1.dir/t1.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\t1.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = t1.exe
+  TARGET_IMPLIB = libt1.dll.a
+  TARGET_PDB = t1.exe.dbg
+
+# =============================================================================
+# Object build statements for EXECUTABLE target 2222
+
+
+#############################################
+# Order-only phony target for 2222
+
+build cmake_object_order_depends_target_2222: phony || CMakeFiles/2222.dir
+
+build CMakeFiles/2222.dir/bronze/22-2/2222.cpp.obj: CXX_COMPILER__2222_Debug D$:/project/c++/usaco_cpp/bronze/22-2/2222.cpp || cmake_object_order_depends_target_2222
+  DEP_FILE = CMakeFiles\2222.dir\bronze\22-2\2222.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\2222.dir
+  OBJECT_FILE_DIR = CMakeFiles\2222.dir\bronze\22-2
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target 2222
+
+
+#############################################
+# Link the executable 2222.exe
+
+build 2222.exe: CXX_EXECUTABLE_LINKER__2222_Debug CMakeFiles/2222.dir/bronze/22-2/2222.cpp.obj
+  FLAGS = -g
+  LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\2222.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = 2222.exe
+  TARGET_IMPLIB = lib2222.dll.a
+  TARGET_PDB = 2222.exe.dbg
+
 
 #############################################
 # Utility command for edit_cache
@@ -497,11 +695,19 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 build 1511: phony 1511.exe
 
+build 15121: phony 15121.exe
+
+build 15123: phony 15123.exe
+
 build 1611: phony 1611.exe
 
 build 16121: phony 16121.exe
 
 build 19122: phony 19122.exe
+
+build 1933: phony 1933.exe
+
+build 2: phony 2.exe
 
 build 2013: phony 2013.exe
 
@@ -513,13 +719,17 @@ build 2221: phony 2221.exe
 
 build 22211: phony 22211.exe
 
-build 3: phony 3.exe
+build 2222: phony 2222.exe
+
+build 2312: phony 2312.exe
 
 build 3-opt: phony 3-opt.exe
 
 build 3-opt-fix: phony 3-opt-fix.exe
 
 build t: phony t.exe
+
+build t1: phony t1.exe
 
 # =============================================================================
 # Folder targets.
@@ -529,7 +739,7 @@ build t: phony t.exe
 #############################################
 # Folder: D:/project/c++/usaco_cpp/cmake-build-debug
 
-build all: phony t.exe 2123.exe 19122.exe 3.exe 2013.exe 16121.exe 1611.exe 2213.exe 2221.exe 3-opt.exe 3-opt-fix.exe 22211.exe 1511.exe
+build all: phony t.exe 2123.exe 19122.exe 15123.exe 2013.exe 16121.exe 1611.exe 2213.exe 2221.exe 3-opt.exe 3-opt-fix.exe 22211.exe 1511.exe 1933.exe 2.exe 2312.exe 15121.exe t1.exe 2222.exe
 
 # =============================================================================
 # Built-in targets

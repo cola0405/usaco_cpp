@@ -1,19 +1,15 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <cmath>
-
+#include<iostream>
 using namespace std;
-
 int main()
 {
-    vector<int> arr = { 3, 4, 9, 100};
-    int target = 99;
-
-    vector<int>::iterator result = find(arr.begin(), arr.end(), target); //查找target
-    int index = distance(arr.begin(), result);
-
-    cout << "target索引为:" << index << endl;
-
-    system("pause");
+    freopen("promote.in", "r", stdin);
+    freopen("promote.out", "w", stdout);
+    int bb,ba,sb,sa,sans,gb,ga,gans,pb,pa,pans;
+    cin>>bb>>ba>>sb>>sa>>gb>>ga>>pb>>pa;
+    pans=pa-pb;
+    gans=(ga+pans)-gb;
+    sans=(sa+gans)-sb;
+    cout<<sans<<endl;
+    cout<<gans<<endl;
+    cout<<pans<<endl;
 }

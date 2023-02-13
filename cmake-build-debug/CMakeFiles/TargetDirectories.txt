@@ -1,7 +1,7 @@
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/t.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/2123.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/19122.dir
-D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/3.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/15123.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/2013.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/16121.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/1611.dir
@@ -11,5 +11,11 @@ D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/3-opt.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/3-opt-fix.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/22211.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/1511.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/1933.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/2.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/2312.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/15121.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/t1.dir
+D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/2222.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
 D:/project/c++/usaco_cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
