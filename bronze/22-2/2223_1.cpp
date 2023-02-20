@@ -20,15 +20,6 @@ bool exist(string word, string letters){
 
 vector<string> letters_set;
 
-bool is_possible(string word){
-    for(auto letters : letters_set){
-        if(exist(word, letters)){
-            return true;
-        }
-    }
-    return false;
-}
-
 
 int main()
 {
@@ -40,23 +31,25 @@ int main()
         cubes.push_back(cube);
     }
 
-    // build letters set
-    for(auto a : cubes[0]){
-        for(auto b : cubes[1]){
-            for(auto c: cubes[2]){
-                for(auto d : cubes[3]){
-                    string letters = {a,b,c,d};
-                    letters_set.push_back(letters);
-                }
-            }
-        }
-    }
-
     for(int i=0; i<n; i++){
         string word;
         cin>>word;
 
-        if(is_possible(word)){
+        bool flag = false;
+        for(auto a : cubes[0]){
+            for(auto b : cubes[1]){
+                for(auto c: cubes[2]){
+                    for(auto d : cubes[3]){
+                        string letters = {a,b,c,d};
+                        letters_set.push_back(letters);
+                        if(exist(word, letters)){
+                            flag = true;
+                        }
+                    }
+                }
+            }
+        }
+        if(flag){
             cout<<"YES"<<endl;
         }else{
             cout<<"NO"<<endl;
