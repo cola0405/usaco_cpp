@@ -32,35 +32,10 @@ bool is_possible(string word){
 
 int main()
 {
-    int n;
-    cin>>n;
-    for(int i=0; i<4; i++){
-        string cube;
-        cin>>cube;
-        cubes.push_back(cube);
-    }
-
-    // build letters set
-    for(auto a : cubes[0]){
-        for(auto b : cubes[1]){
-            for(auto c: cubes[2]){
-                for(auto d : cubes[3]){
-                    string letters = {a,b,c,d};
-                    letters_set.push_back(letters);
-                }
-            }
-        }
-    }
-
-    for(int i=0; i<n; i++){
-        string word;
-        cin>>word;
-
-        if(is_possible(word)){
-            cout<<"YES"<<endl;
-        }else{
-            cout<<"NO"<<endl;
-        }
+    vector<string> s{".*", "**"};
+    s[0][0] = '+';
+    for(auto line : s){
+        cout<<line<<endl;
     }
 
 }
