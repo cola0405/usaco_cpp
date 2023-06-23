@@ -17,22 +17,17 @@ int main(){
 
     // get closest end
     long long end = s.size();
-    while(end<n){
+    while(end*2<n){
         end *= 2;
     }
-    if(end>n)end/=2;
+
     while(n>s.size()){
-        if(n==end || n==end+1){
-            if(end == s.size()){
-                n = end;
-                continue;
-            }
-            end/=2;
-            n = end - 1;  // special mode
+        if(n != end+1){
+            n = n - (end+1);  // normal
         }else{             
-            n = n - (end+1);  // normal mode
+            n = end;  // special
         }
-        while(end>n)end/=2;
+        while(end>=n)end/=2;
     }
     cout<<s[n-1]<<endl;
     return 0;
