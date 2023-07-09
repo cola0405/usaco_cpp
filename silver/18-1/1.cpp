@@ -1,3 +1,6 @@
+// 把每对点拆出来，按先后顺序排列
+// 根据当前点是start还是end进行贪心统计sum和min_own
+// python的代码可能会更容易理解
 #include <bits/stdc++.h>
 using namespace std;
 
