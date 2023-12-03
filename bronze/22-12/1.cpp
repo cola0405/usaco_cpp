@@ -17,18 +17,18 @@ int main(){
 	sort(c.begin(),c.end());
 	
 	long long ans = 0;
-	long long price_per = 0;
+	long long price = 0;
 	for(int i = 0 ; i < n ;i++){
-		long long price;
-		price = (long long)c[i]*(n-i);
+		long long fee;
+		fee = (long long)c[i]*(n-i);
 
-		if(price > ans)
+		if(fee > ans)
 		{
-			ans = price;
-			price_per = c[i];
+			ans = fee;
+			price = c[i];
 		}
 	}
 	
-	cout<<ans<<" "<<price_per<<endl;
+	cout<<ans<<" "<<price<<endl;
 	return 0;
 }
