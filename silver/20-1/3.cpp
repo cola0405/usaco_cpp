@@ -52,7 +52,7 @@ int main(){
         path.push_back({a,b,w});
         wh.push_back(w);
     }
-    sort(wh.begin(), wh.end());
+    sort(wh.begin(), wh.end());     // 答案肯定在虫洞width之间
 
     // binary seach
     int low=0, high=wh.size()-1;
@@ -64,5 +64,4 @@ int main(){
         else high = mid-1;
     }
     cout<<wh[low]<<endl;
-    
 }
