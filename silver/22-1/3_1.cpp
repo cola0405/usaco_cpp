@@ -33,7 +33,7 @@ void check(int src, int dst){
         already.insert(x);
         cow[{src,dst}].pop_back();
     }else if (already.find(x) == already.end()){
-        permu.push_back(x);
+        permu.push_back(x);     // 没燕麦吃，但要放进permutation
         already.insert(x);
         cow[{src,dst}].pop_back();
     }
@@ -47,21 +47,7 @@ void dfs(int cur){     // 遍历往 permutation 放就行
             st.push_back({cur, dst});   // 之后如果cur已经入already，则可以直接选dst
             continue;
         }
-        // int x = cow[{cur,dst}].back();
         check(cur, dst);
-        // if(already.find(cur) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(cur);
-        //     cow[{cur,dst}].pop_back();
-        // }else if(already.find(dst) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(dst);
-        //     cow[{cur,dst}].pop_back();
-        // }else if (already.find(x) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(x);
-        //     cow[{cur,dst}].pop_back();
-        // }
         inDegree[dst]--;
         dfs(dst);
     }
@@ -107,36 +93,16 @@ int main(){
         st.clear();
 
         if(edgeCount < vtxCount){   // 燕麦很充裕，随便给都行
-            // permutation.insert(permutation.end(), vertices.begin(), vertices.end());
-            for(int vertex: vertices){
-                //  if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
+            for(int vertex: vertices) dfs(vertex);
         }else if(edgeCount == vtxCount){
-            for(int vertex: vertices){
-                //  if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
+            for(int vertex: vertices) dfs(vertex);
         }else{
             ans += max(0, edgeCount - vtxCount);
-            for(int vertex: vertices){
-                // if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
+            for(int vertex: vertices) dfs(vertex);
         }
 
         for(auto item: st){
             int src = item[0], dst = item[1];
-            // if(already.find(src) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);
-            //     already.insert(src);
-            // }else if(already.find(dst) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);
-            //     already.insert(dst);
-            // }else if(already.find(cow[{src,dst}]) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);  // 没燕麦吃，但要放进permutation
-            //     already.insert(cow[{src,dst}]);
-            // }
             check(src, dst);
         }
 
