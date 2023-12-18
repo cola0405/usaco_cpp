@@ -1,149 +1,95 @@
-// first -> second 作一个有向图
+// first -> second 作一个 "假无向图" （添加双向边，但是有额外标志位来表明方向）
 // vertex 表示燕麦
 // edge 表示牛
 
-// 循环 n 次，每次处理一个 vertex，尽量不 
+// (1) 如果 E < V，无环，dfs 选出牛即可
+// (2) 如果 E = V，dfs 找出构成环的最后一边，先选这条边，然后 dfs
+// (3) 如果 E > v，dfs 找出构成环的最后一边，先选这条边，然后 dfs，需要额外把吃不到的牛也加入到队列（fs都已经被吃了）
 
-// (1) 如果 E = V，遍历有 out 的都进行 dfs 即可，得到permutation
-// (2) 如果 E > v，找任一节点 dfs 得到 permutation
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
-int n,m;
-vector<int> r;
-vector<vector<int>> st;
-unordered_map<int, vector<int>> components;
-unordered_map<int, int> edges;
-unordered_map<int, vector<int>> g;  // 存储图
-vector<vector<int>> fs = {{}};
-vector<int> permu,inDegree;
-unordered_set<int> already;    // 被吃掉的cereal
-map<vector<int>, vector<int>> cow;
-vector<int> visited;
+int n,m,f,s,fisrtCereal, theCow;
+unordered_set<int> usedCereal, cycleDetect;
+vector<int> cowOrder;
+vector<bool> mark = {false};
+// unordered_map<int, vector<int>> g;   // value 不用set，可能会漏掉一些边
+// unordered_map<int, unordered_map<int, int>> cow;      // 用这种方法标记的话，如果有fs重复的牛，那就丢失了
 
-void check(int src, int dst){
-    int x = cow[{src,dst}].back();
-    if(already.find(src) == already.end()){
-        permu.push_back(x);
-        already.insert(x);
-        cow[{src,dst}].pop_back();
-    }else if(already.find(dst) == already.end()){
-        permu.push_back(x);
-        already.insert(x);
-        cow[{src,dst}].pop_back();
-    }else if (already.find(x) == already.end()){
-        permu.push_back(x);
-        already.insert(x);
-        cow[{src,dst}].pop_back();
-    }
-}
+struct edge{
+    int cow;
+    int to;
+    int isFirst;
+    edge(int cow, int to, int isFirst): cow(cow), to(to), isFirst(isFirst){};
+};
+vector<vector<edge>> edges;     // 记录所有边，就不会有丢失的问题了
 
-void dfs(int cur){     // 遍历往 permutation 放就行
-    if(visited[cur]) return;
-    visited[cur] = 1;
-    for(auto dst: g[cur]){
-        if(g.find(dst) == g.end()){
-            st.push_back({cur, dst});   // 之后如果cur已经入already，则可以直接选dst
-            continue;
+void doExtra(int curCereal, int prevCereal){ 
+    // 不用额外设置return条件，因为for循环内有 if 分支没有继续递归
+    cycleDetect.insert(curCereal);
+    for(auto next: edges[curCereal]){
+        if(cycleDetect.find(next.to) != cycleDetect.end()){
+            if(fisrtCereal == -1 && next.to != prevCereal){    // 排除a->b b->a 的情况，这可以直接dfs
+                fisrtCereal = next.isFirst ? curCereal : next.to;
+                theCow = next.cow;
+                cowOrder.push_back(theCow);
+                mark[theCow] = true;    // mark the cow already eat cereal
+                return;     // 找出一条extra即可，剩下的交给dfs
+            }
+        }else{
+            doExtra(next.to, curCereal);
         }
-        // int x = cow[{cur,dst}].back();
-        check(cur, dst);
-        // if(already.find(cur) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(cur);
-        //     cow[{cur,dst}].pop_back();
-        // }else if(already.find(dst) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(dst);
-        //     cow[{cur,dst}].pop_back();
-        // }else if (already.find(x) == already.end()){
-        //     permu.push_back(x);
-        //     already.insert(x);
-        //     cow[{cur,dst}].pop_back();
-        // }
-        inDegree[dst]--;
-        dfs(dst);
     }
 }
 
-int find(int x){
-    if(x == r[x]) return x;
-    r[x] = find(r[x]);
-    return r[x];
+void dfs(int curCreal){
+    // 不直接return，因为可能是其他节点到cur的
+    usedCereal.insert(curCreal);
+    for(auto next: edges[curCreal]){
+        if(usedCereal.find(next.to) == usedCereal.end() && next.cow != theCow){
+            cowOrder.push_back(next.cow);   // 这里能入队列的都是不挨饿的 (f或s中的一个还有得吃)
+            mark[next.cow] = true;  // 只有fs中还有一者存在时牛才有得吃
+            dfs(next.to);   // 某节点被取了，那接着就应该优先取它的first
+        }
+    }
 }
 
 int main(){
-    freopen("3.in", "r", stdin);
-    freopen("3.out", "w", stdout);
+    // freopen("3.in", "r", stdin);
+    // freopen("3.out", "w", stdout);
 
     cin>>n>>m;
-    inDegree.resize(n+1);
-    visited.resize(n+1);
-    for(int i=0; i<=m; i++) r.push_back(i);
-    for(int i=1; i<=n; i++){
-        int f,s;
-        cin>>f>>s;
-        vector<int> line = {f,s};
-        fs.push_back(line);
-        cow[line].push_back(i);      // line 可能重复！    
-        inDegree[s]++;  // in-degree count
-        r[find(s)] = r[find(f)];    // build disjoint-set
-        g[f].push_back(s);
+    for(int i=0; i<=m; i++){
+        edges.push_back({});
     }
-    
-    // build components
     for(int i=1; i<=n; i++){
-        components[find(i)].push_back(i);
-        edges[find(fs[i][0])]++;
+        cin>>f>>s;
+        // 不能简单地只建立单向图,因为存在 first second 的先后问题
+        edges[f].push_back(edge(i,s,true)); 
+        edges[s].push_back(edge(i,f,false));
+        mark.push_back(false);
+    }
+
+    for(int i=1; i<=m; i++){    // 查看每个cereal的情况
+        if(usedCereal.find(i) != usedCereal.end()) continue;
+
+        theCow = -1;
+        fisrtCereal = -1;    // 后续dfs的起点
+        doExtra(i, -1);  // 找出一条extra即可，剩下的交给dfs
+        if(fisrtCereal != -1){
+            dfs(fisrtCereal);    // 有firstCereal 则从这里开始 dfs
+        }else{
+            dfs(i);     // 否则就从当前cereal开始dfs
+        }
     }
 
     int ans = 0;
-    for(auto comp: components){     // iterate through the components
-        int root = comp.first;
-        vector<int>& vertices = comp.second;
-        int vtxCount = vertices.size();
-        int edgeCount = edges[root];
-        st.clear();
-
-        if(edgeCount < vtxCount){   // 燕麦很充裕，随便给都行
-            // permutation.insert(permutation.end(), vertices.begin(), vertices.end());
-            for(int vertex: vertices){
-                //  if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
-        }else if(edgeCount == vtxCount){
-            for(int vertex: vertices){
-                //  if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
-        }else{
-            ans += max(0, edgeCount - vtxCount);
-            for(int vertex: vertices){
-                // if(inDegree[vertex] <= 0) dfs(vertex);
-                dfs(vertex);
-            }
+    for(int i=1; i<=n; i++){
+        if(!mark[i]){
+            cowOrder.push_back(i);  // 挨饿的牛最后也要入队列 ！！！
+            ans++;
         }
-
-        for(auto item: st){
-            int src = item[0], dst = item[1];
-            // if(already.find(src) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);
-            //     already.insert(src);
-            // }else if(already.find(dst) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);
-            //     already.insert(dst);
-            // }else if(already.find(cow[{src,dst}]) == already.end()){
-            //     permu.push_back(cow[{src,dst}]);  // 没燕麦吃，但要放进permutation
-            //     already.insert(cow[{src,dst}]);
-            // }
-            check(src, dst);
-        }
-
     }
     cout<<ans<<endl;
-    for(auto x: permu) {
-        cout<<x<<endl;
-    }
-    return 0;
+    for(auto cow: cowOrder) cout<<cow<<endl;
 }
