@@ -5,6 +5,7 @@
 // 竞赛中的数据结构
 // (1) 能声明固定长度就声明固定长度，内存申请更消耗时间
 // (2) 能用pair就用pair
+// (3) 能用标志位就不用unordered_set
 
 #include <bits/stdc++.h>
 using namespace std;
