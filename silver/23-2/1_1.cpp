@@ -6,23 +6,16 @@ using namespace std;
 int T,N;
 long long tC,tM;
 long long friends[100][3];
-unordered_map<int, unordered_map<int>>
 
 bool valid(int money){
-    for(int a=0; a<=money; a++){    // 这个10^9 没办法优化
-        int b = money-a;
-        long long cTime=max(1ll,tC-a), mTime=max(1ll,tM-b);
-        int flag = 1;
-        for(int i=0; i<N; i++){
-            long long needC=friends[i][0], needM=friends[i][1], wait=friends[i][2];
-            if(needC*cTime + needM*mTime > wait){
-                flag = 0;
-                break;
-            }
-        }
-        if(flag) return true;
+    long long cLow = 0, cHigh = tC-1;     // 给 c upgrade 的可行范围
+    for(int i=0; i<N; i++){
+        long long needC=friends[i][0], needM=friends[i][1], wait=friends[i][2];
+        if(needC == needM) continue;
+        cHigh = (wait + needM*money - needM*tM - needC*tC) / (needM-needC);
+        cLow = ((tC+tM) + needM*money - needM*tM - needC*tC) / (needM-needC);
     }
-    return false;
+    return cLow<=cHigh;
 }
 
 int main(){

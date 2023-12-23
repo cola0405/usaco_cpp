@@ -10,9 +10,6 @@
 // 只要找
 
 
-
-
-
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -21,7 +18,7 @@ bool cmp(vector<long long> &s1, vector<long long> &s2){
 }
 
 int main(){
-	freopen("t.in", "r", stdin);
+	// freopen("t.in", "r", stdin);
 	
 	int G,N;
 	cin>>G>>N;
