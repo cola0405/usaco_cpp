@@ -1,3 +1,9 @@
+// 优先队列
+
+// 以时间为主线，一个接一个吃草
+// 吃完之后更新一下pq即可
+// 下一个吃草的就是pq.top()
+
 #include<bits/stdc++.h>
 using namespace std;
 
