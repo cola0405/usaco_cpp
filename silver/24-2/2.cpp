@@ -45,6 +45,7 @@ void solve(){
 
     if(tube[A][0] == tube[B][0]){
         // make the head different (ps: it will not affect the number of operation)
+        // because you have to pour a correct one back, why not just insert it first for convience
         tube[B].insert(tube[B].begin(), '0' + (tube[B][0]-'0')^3);
     }
 
@@ -60,6 +61,7 @@ void solve(){
         B = tmp;
     }
     // if a.top == b.top, pour the longer one to the shorter
+    // make sure another tube and tube-c can receive the liquid properly
     if(tube[A].back() == tube[B].back()) pour(B,A);
     if(tube[A].size() == 1){
         clear_tube(B,A,C);
