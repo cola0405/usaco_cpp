@@ -1,109 +1,95 @@
+// greedy + prefix + compression
 #include<bits/stdc++.h>
 using namespace std;
 
-int t,n,q,c;
-int scores[30];
-priority_queue<int> pq;
-vector<int> waitting;
-vector<pair<int,int>> p;
-
 void solve(){
-    // init
-    while(!pq.empty()) pq.pop();
-    waitting.clear();
-    p.clear();
-
+    int t,a,j;
+    vector<int> seq = {-1};     // -1 used for offset
+    vector<int> h;
+    int n,q,c;
     cin>>n>>q>>c;
-    for(int i=1; i<=n; i++){
-        cin>>scores[i];
+    for(int u=1; u<=n; u++){
+        cin>>t;
+        seq.push_back(t);
     }
-    
-    for(int i=0; i<q; i++){
-        int right,top_inx;
-        cin>>right>>top_inx;
-        p.push_back(make_pair(right, top_inx));
+    h.resize(n+1);
+    for(int u=0; u<q; u++){
+        cin>>a>>j;
+        h[a] = j;   // only a is distinct, j could be repeated
     }
-    sort(p.begin(), p.end());
-    
-    int cur = 0;
-    for(auto& it: p){
-        int right = it.first, top_inx = it.second;
-        for(int i=cur+1; i<=right; i++){
-            if(scores[i] == 0){
-                pq.push(1);
-                waitting.push_back(i);
-            }
-            else{
-                pq.push(scores[i]);
-            }
-            cur++;
-        }
-        
-        // 检查窗口到 top_inx 中间有没有 >top
-        for(int i=right; i<top_inx; i++){
-            if(scores[i] > pq.top()){
-                cout<<-1<<endl;
+    vector<int> origin(seq);    // copy the origin seq
+    for(int u=1; u<=n; u++){
+        if(seq[u] == 0) seq[u] = 1;
+    }
+    // optimize the interval to reduce the time complexity
+    for(int a=1; a<=n; a++){
+        for(int j=a+1; j<h[a]; j++){   // the interval between a and h[a]
+            if(h[j] != 0 && h[j] != h[a]){      
+                cout<<-1<<endl;     // the restrictions are in conflict
                 return;
             }
+            h[j] = h[a];
         }
+    }
 
-        if(scores[top_inx] == 0){
-            scores[top_inx] = pq.top()+1;
-            pq.push(scores[top_inx]);
-            cur++;
-            if(scores[top_inx] > c){
-                cout<<-1<<endl;
-                return;
-            }
+    // loop through the sequence 
+    int pre_max = 0, after_max = 0;
+    int i = 1;
+    while(i<=n){
+        pre_max = max(pre_max, seq[i]);     // update before the "continue"
+        after_max = max(after_max, seq[i]);
+        if(h[i] == 0){
+            i++;
+            continue;
         }
-        
-        else{
-            // 如果当前有top —— 要破坏
-            int pq_top = pq.top();
-            pq.pop();
-            if(pq_top != pq.top()){
-                pq.push(pq_top);    // 放回
-                if(waitting.empty()){
+        for(int j=i+1; j<h[i]; j++){    // the time complexiy is still O(n) -- this while loop is jumping
+            after_max = max(after_max, seq[j]);
+        }
+        if(after_max > pre_max){    // try to find a slot to assign after_max
+            bool flag = true;
+            for(int j=i; j>=1; j--){
+                if(h[j] != 0 && h[j] < h[i]){
+                    // if j comes to here (before a) which means no available slot
+                    // because we can't use the slot in the previous block
                     cout<<-1<<endl;
                     return;
                 }
-                else{
-                    scores[waitting.back()] = pq.top();
-                    waitting.pop_back();
-                    while(!waitting.empty()){
-                        scores[waitting.back()] = 1;
-                        waitting.pop_back();
-                    }
+                if(origin[j] == 0){
+                    seq[j] = after_max;
+                    pre_max = after_max;
+                    flag = false;
+                    break;
                 }
             }
-            else{   // 如果当前pq内已经没有top —— 给1
-                pq.push(pq_top);
-                if(scores[top_inx] <= pq.top()){
-                    cout<<-1<<endl;
-                }
-                while(!waitting.empty()){
-                    scores[waitting.back()] = 1;
-                    waitting.pop_back();
-                }
+            if(flag){   // can't find a slot to assign after_max
+                cout<<-1<<endl;
+                return;
             }
         }
+        if(origin[h[i]] == 0){      // if h[i] is a slot, it can't be 1
+            seq[h[i]] = pre_max+1;
+        }
+        if(seq[h[i]] > c || pre_max >= seq[h[i]]){
+            cout<<-1<<endl;     
+            return;
+        }
+        // time complexity O(n)
+        // the overlap intervals could be merged to one block
+        i = h[i];     
     }
-    for(int i=1; i<=n; i++){
-        if(scores[i] == 0) scores[i] = 1;
-    }
-    cout<<scores[1];
-    for(int i=2; i<=n; i++){
-        cout<<" "<<scores[i];
-    }
-    cout<<endl;
+
+    for(int i=1; i<n; i++) cout<<seq[i]<<' ';
+    cout<<seq[n]<<endl;
 }
 
 int main(){
-    freopen("1.in", "r", stdin);
-    freopen("1.out", "w", stdout);
+    // freopen("1.in", "r", stdin);
+    // freopen("1.out", "w", stdout);
 
-    cin>>t;
-    for(int u=0; u<t; u++){
+    int T;
+    cin>>T;
+    while(T){
         solve();
+        T--;
     }
 }
