@@ -1,97 +1,90 @@
-// 前缀后缀问题，解析看不懂 -- 以后再研究吧
+// not done yet, the result less than answer
 
 #include<bits/stdc++.h>
 using namespace std;
 
-int t,c;
-string cm;
-int target[100001], L[100001], R[100001];
-vector<int> op = {0,1,-1,2,-2};
-unordered_map<int, int> offset, tx;
-unordered_map<char, int> d = {{'L',-1}, {'R',1}};
-unordered_map<int, unordered_map<int, int>> repeatHit;
-unordered_map<int, int> cnt;
+int T, C, t, pos = 0;
+unordered_set<int> target;
+unordered_set<int> L;                // {pos} store the hit target use commands[:cur]
+unordered_map<int, int> first;       // {i: pos} record the first shoot to the target
+string commands;
+
+bool fisrt_shoot(int i){
+    return target.find(i) != target.end() && L.find(i) == L.end();
+}
 
 int main(){
     freopen("3.in", "r", stdin);
     freopen("3.out", "w", stdout);
 
-    cin>>t>>c;
-    for(int i=0; i<t; i++){
-        cin>>target[i];
-        tx[target[i]] = i;   // the distinct target can be the key
+    cin>>T>>C;
+    for(int i=0; i<T; i++){
+        cin>>t;
+        target.insert(t);
     }
-    cin>>cm;
-
-    int cur = 0;
-    vector<int> hit;
-    for(int i=0; i<c; i++){     // 统计默认情况下能射击到的目标
-        if(cm[i] == 'F'){
-            hit.push_back(cur);
-            cnt[cur]++;
+    cin>>commands;
+    for(int i=0; i<C; i++){
+        if(commands[i] == 'F'){
+            if(target.find(pos) != target.end()){
+                if(L.find(pos) == L.end()) first[i] = pos;     // only record the first shoot
+                L.insert(pos);
+            }
+        }                                                                                    
+        else if(commands[i] == 'L') pos--;
+        else pos++;
+    }
+    
+    vector<unordered_set<int>> right_valid(5);      // all valid shoot at right
+    vector<unordered_set<int>> already(5);          // the target already be hit -- but it may work when the previous F changes to L or R
+    int ans = L.size();   // the number with the origin commands
+    for(int i=C-1; i>=0; i--){
+        // update L first (pop out the commands[i])
+        if(first.find(i) != first.end()) L.erase(first[i]);
+        if(commands[i] == 'L'){
+            pos++;
+            int cnt1 = L.size() + right_valid[3].size();     // L -> F
+            if(fisrt_shoot(pos) && right_valid[3].find(pos) == right_valid[3].end()) cnt1++;        // check the cur_pos exist target or not
+            int cnt2 = L.size() + right_valid[4].size();     // L -> R
+            ans = max(ans, max(cnt1, cnt2));
+        }else if(commands[i] == 'R'){
+            pos--;
+            int cnt1 = L.size() + right_valid[1].size();     // R -> F
+            if(fisrt_shoot(pos) && right_valid[1].find(pos) == right_valid[1].end()) cnt1++;
+            int cnt2 = L.size() + right_valid[0].size();     // R -> L
+            ans = max(ans, max(cnt1, cnt2));
         }else{
-            cur += d[cm[i]];
-            if(cm[i] == 'L'){
-                L[i+1] = L[i]+1;    // L R 前缀和统计数量 -- 高效求区间内L和R的数量
-                R[i+1] = R[i];
-            }else{
-                L[i+1] = L[i];
-                R[i+1] = R[i]+1;
-            }
+            int cnt1 = L.size() + right_valid[1].size();     // F -> L
+            if(fisrt_shoot(pos) && already[1].find(pos) != already[1].end()) cnt1++;
+            int cnt2 = L.size() + right_valid[3].size();     // F -> R
+            if(fisrt_shoot(pos) && already[3].find(pos) != already[3].end()) cnt2++;
+            ans = max(ans, max(cnt1, cnt2));
         }
-    }
 
-    // 判断两F之间的L和R来看 -- 情况太复杂。。 变F的话hits也跟着变化了  -- 肯定走弯路了
-    for(int i=0; i<hit.size(); i++){
-        for(auto it: op){
-            // op 可达才往下
-            if()
-            if(tx.find(hit[i]+it) != tx.end()){  // 初次击中时才更新offset
-                // up to 1 -- Bessie 可以不修改 -- 要保留offset[0]
-                if(repeatHit[hit[i]][hit[i]+it]==0) offset[it]++;    // 应该是hit[i]已有的才不再统计
-                repeatHit[hit[i]][hit[i]+it]++;
-            }
-        }
-    }
-
-    int ans = 0;
-    for(auto it: offset) ans = max(ans, it.second);     // 如果 Bessie 不修改
-
-    unordered_set<int> left, right(hit.begin(), hit.end());  // right 保存了右边的初始hits
-    for(int i=0; i<hit.size(); i++){    // i及左边不偏移 + 右边看哪种偏移方式拿到最多命中
-        cnt[hit[i]]--;
-        if(cnt[hit[i]] == 0) right.erase(hit[i]);  // 更新right
-        if(tx.find(hit[i]) != tx.end()) {
-            if(left.find(hit[i]) == left.end()){  // 提前命中的 target 首次出现 -- 更新一次offset即可
-                // left 已经命中的话，那需要更新之后的相关的offset
-                for(auto it: op){
-                    if(right.find(hit[i]-it) != right.end()){
-                        offset[it]--;
-                    }
+        // after let right_valid not inlcude i
+        if(commands[i] == 'F'){     
+            for(int j=0; j<5; j++){
+                int offset = j-2;
+                if(fisrt_shoot(pos+offset)){
+                    right_valid[j].insert(pos+offset);
+                }else if(target.find(pos+offset) != target.end()){
+                    already[j].insert(pos+offset);        // the target which is hit more than once
                 }
             }
-            left.insert(hit[i]);   // left 击中的目标需要去重
         }
-
-        for(auto it: op){       // 清除hit[i] 对offset的影响
-            if(tx.find(hit[i]+it) != tx.end()){
-                repeatHit[hit[i]][hit[i]+it]--;     // 最后一个去了offset才-1
-                if(repeatHit[hit[i]][hit[i]+it]==0) offset[it]--;    // up to 1 -- Bessie 可以不修改
-            }
-        }
-        // 拿当前的命中情况更新ans
-        for(auto it: offset) ans = max(ans, int(left.size() + it.second));
     }
-
     cout<<ans<<endl;
-
 }
 
 /*
 有一些情况是压根就到不了 offset[2] 的
 1 5
 2
-F
+FFFFF
 
 ans是0，而不是1
+
+
+2 7
+-2 3
+RRRLLLF
 */

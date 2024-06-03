@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-#include<bits/stdc++.h>
-using namespace std;
-
-int main(){
-    cout<<"hello"<<endl;
-=======
 // game theory + greedy + suffix
 #include <bits/stdc++.h>
 using namespace std;
@@ -63,5 +56,4 @@ int main(){
     for(int u=0; u<T; u++){
         solve();
     }
->>>>>>> beab366ece6b48b59f4293b2af3d896f2dbc0125
 }
