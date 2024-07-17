@@ -1,105 +1,76 @@
 // greedy
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
+int A=1,B=2,C=3;
+vector<string> t;
 
-int A=1, B=2, C=3;
-int ans = 0;
-vector<vector<char>> tube = {{}, {}, {}, {}};
-
-void pour(int src, int dst){
-    cout<<src<<" "<<dst<<'\n';      // don't flush the stream immediately
-    if(tube[dst].empty()) tube[dst].push_back(tube[src].back());
-    tube[src].pop_back();
-}
-
-void clear_tube(int t, int t1, int t2){     // from t to t1 or t2
-    while(tube[t].size() > 1){
-        if(tube[t].back() == tube[t1].back()) pour(t,t1);
-        else pour(t,t2);
-    }
-}
-
-vector<char> simplify(string& s){   // remove consecutive same elements
-    vector<char> res;
+string simplify(string s){
+    string res;
     for(auto ch : s){
-        if(res.empty() || res.back() != ch){
-            res.push_back(ch);
-        }
+        if(res.empty() || ch != res.back()) res.push_back(ch);
     }
     return res;
 }
 
-void clear_c(){
-    if(!tube[C].empty()){
-        if(tube[C].back() == tube[A].back()) pour(C,A);
-        else pour(C,B);
+void pour(int src, int dst){
+    cout<<src<<' '<<dst<<'\n';
+    if(t[dst].empty()) t[dst].push_back(t[src].back());
+    t[src].pop_back();
+}
+
+void clear_tube(int i){
+    while(t[i].size() > 1){
+        if(t[i].back() == t[3^i].back()) pour(i, 3^i);
+        else pour(i, C);
     }
 }
 
 void solve(){
     int n,p;
-    string a,b;
     cin>>n>>p;
-    cin>>a>>b;
-    tube[A] = simplify(a);
-    tube[B] = simplify(b);
+    cin>>t[A]>>t[B];
+    t[A] = simplify(t[A]);
+    t[B] = simplify(t[B]);
 
-    if(tube[A][0] == tube[B][0]){
-        // make the head different (ps: it will not affect the number of operation)
-        // because you have to pour a correct one back, why not just insert it first for convience
-        tube[B].insert(tube[B].begin(), '0' + (tube[B][0]-'0')^3);
+    if(t[A][0] == t[B][0]){
+        t[B].insert(t[B].begin(), '0' + (t[B][0]-'0')^3);
     }
-
-    ans = tube[A].size() + tube[B].size() - 2;
-    if(ans > 1) ans++;
+    int ans = t[A].size() + t[B].size() - 2;    // "2" is the bottom of the tube
+    if(ans>1) ans++;    // ans>1, which means we need to use t3 and we need to pour back
     cout<<ans<<endl;
-    if(p == 1) return;
+    if(p == 1 || ans == 0) return;
 
-    // sort the tubes
-    if(tube[A].size() > tube[B].size()){
-        int tmp = A;
-        A = B;
-        B = tmp;
-    }
-    // if a.top == b.top, pour the longer one to the shorter
-    // make sure another tube and tube-c can receive the liquid properly
-    if(tube[A].back() == tube[B].back()) pour(B,A);
-    if(tube[A].size() == 1){
-        clear_tube(B,A,C);
-        clear_c();
+    if(t[A].size() > t[B].size()) swap(A, B);
+    // make sure the end of tube-A and tube-B is different
+    if(t[B].back() == t[A].back()) pour(B, A);
+
+    // the incorrect order will lead to the bad situation
+    // A: 121   C:2
+    // B: 2
+    if(t[B].size() > 1 && t[B].back() == t[B][0]) {
+        pour(B,C);
+        clear_tube(A);
+        clear_tube(B);      
     }else{
-        pour(B,C);   // to beaker
-        if(tube[C][0] != tube[A][0]){
-            clear_tube(A,B,C);
-            clear_tube(B,A,C);
-        }else{
-            clear_tube(B,A,C);
-            clear_tube(A,B,C);
-        }
-        clear_c();
+        clear_tube(B);
+        clear_tube(A);
+    }
+    if(!t[C].empty()){
+        if(t[C].back() == t[A].back()) pour(C, A);
+        else pour(C, B);
     }
 }
 
 int main(){
-    // freopen("2.in","r",stdin);
-    // freopen("2.out","w",stdout);
+    // freopen("2.in", "r", stdin);
+    // freopen("2.out", "w", stdout);
 
     int T;
     cin>>T;
-    for(int u=0; u<T; u++){
-        ans=0, A=1, B=2;
+    while(T){
+        t = {"", "", "", ""};
+        A=1, B=2;
         solve();
+        T--;
     }
-    return 0;
 }
-
-/*
-1
-5 3
-21212
-22211
-
-212
-212
-
-*/
