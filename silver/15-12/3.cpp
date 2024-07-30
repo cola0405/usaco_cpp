@@ -4,7 +4,7 @@ int main(){
     freopen("bcount.in", "r", stdin);
     freopen("bcount.out", "w", stdout);
 
-    int n,q;
+    int n,q,cow;
     cin>>n>>q;
 
     // init 3 prefix sum
@@ -13,7 +13,6 @@ int main(){
         for(int j=1; j<=3; j++){
             p[j][i] = p[j][i-1];
         }
-        int cow;
         cin>>cow;
         p[cow][i] += 1;
     }
