@@ -6,11 +6,10 @@ int main(){
     freopen("highcard.out", "w", stdout);
 
     // build elsie
-    int n;
+    int n, tmp;
     vector<int> elsie;
     cin>>n;
     for(int i=0; i<n; i++){
-        int tmp;
         cin>>tmp;
         elsie.push_back(tmp);
     }
@@ -20,16 +19,15 @@ int main(){
     vector<int> bessie;
     int j=0;
     for(int card=1; card<=2*n; card++){
-        if(elsie[j] != card){
-            bessie.push_back(card);
-        }else j++;
+        if(card == elsie[j]) j++;
+        else bessie.push_back(card);
     }
     
     // greedy compare
-    int ans=0, i=0;     // i poiner for elsie
     j=0;                // j pointer for bessie
+    int ans=0, i=0;     // i poiner for elsie
     while(i<n && j<n){
-        if(bessie[j]>elsie[i]){
+        if(bessie[j] > elsie[i]){
             ans++;
             i++;
         }

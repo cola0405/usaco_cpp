@@ -1,90 +1,150 @@
-// not done yet, the result less than answer
+// suffix + offset + math
 
-#include<bits/stdc++.h>
+// 难点在于如何求出修改之后的有效击中目标
+// 这里用suffix解决
+// 然后通过维护cnt数组来解决不同的offset问题
+#include <bits/stdc++.h>
 using namespace std;
 
-int T, C, t, pos = 0;
-unordered_set<int> target;
-unordered_set<int> L;                // {pos} store the hit target use commands[:cur]
-unordered_map<int, int> first;       // {i: pos} record the first shoot to the target
-string commands;
+const int N = 1e5 + 10;
+int T, C, t, pos=0, ans=0, res, x;
+string c;
+unordered_map<int, int> cnt,target;                // s is backup
 
-bool fisrt_shoot(int i){
-    return target.find(i) != target.end() && L.find(i) == L.end();
+void init(){        // 方便重置pos、cnt等
+    pos = res = 0;
+    cnt.clear();
+    for(int i=0; i<C; i++){
+        if(c[i] == 'L') pos--;
+        if(c[i] == 'R') pos++;
+        if(c[i] == 'F') {
+            if(++cnt[pos] == 1 && target[pos]) res++;      // valid hit
+        }
+    }
+}
+void l2f(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L'){
+            pos++;
+            // 这里cnt==0，是含suffix的，为0即表示suffix和prefix都没有射击此pos
+            ans = max(ans, res + (target[pos] && cnt[pos]==0));
+        }
+        else if(c[i] == 'R') pos--;
+        else{
+            // 如果--cnt[pos]==0, 首先suffix并没有新增的有效射击（每个suffix的偏移射击都已经更新到cnt了）
+            // 然后其同时还表示这个目标已经没法射击到了，故-1
+            if(target[pos] && --cnt[pos] == 0) res--;      
+
+            // 这个是偏移后的射击，如果是有效射击，则+1
+            if(target[pos+1] && ++cnt[pos+1] == 1) res++;
+        }
+    }
 }
 
-int main(){
-    freopen("3.in", "r", stdin);
-    freopen("3.out", "w", stdout);
+void l2r(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L') pos++, ans = max(ans, res);
+        else if(c[i] == 'R') pos--;
+        else{
+            if(target[pos] && --cnt[pos] == 0) res--;
+            if(target[pos+2] && ++cnt[pos+2] == 1) res++;
+        }
+    }
+}
 
+void r2f(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L') pos++;
+        else if(c[i] == 'R') pos--, ans = max(ans, res + (target[pos] && cnt[pos]==0));
+        else{
+            if(target[pos] && --cnt[pos] == 0) res--;       // update cnt, make detection valid
+            if(target[pos-1] && ++cnt[pos-1] == 1) res++;   // new position
+        }
+    }
+}
+
+void r2l(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L') pos++;
+        else if(c[i] == 'R') pos--, ans = max(ans, res);
+        else{
+            if(target[pos] && --cnt[pos] == 0) res--;
+            if(target[pos-2] && ++cnt[pos-2] == 1) res++;
+        }
+    }
+}
+
+void f2l(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L') pos++;
+        else if(c[i] == 'R') pos--;
+        else{
+            if(target[pos] && --cnt[pos] == 0) res--;
+            if(target[pos-1] && ++cnt[pos-1] == 1) res++;  
+            ans = max(ans, res);     
+        }
+    }
+}
+
+void f2r(){
+    init();
+    for(int i=C-1; i>=0; i--){
+        if(c[i] == 'L') pos++;
+        else if(c[i] == 'R') pos--;
+        else{
+            if(target[pos] && --cnt[pos] == 0) res--;       // update cnt, make detection valid
+            if(target[pos+1] && ++cnt[pos+1] == 1) res++;   // new position
+            ans = max(ans, res);
+        }
+    }
+}
+
+int main()
+{
+    // freopen("3.in", "r", stdin);
+    // freopen("3.out", "w", stdout);
+
+    ios::sync_with_stdio(false);
     cin>>T>>C;
     for(int i=0; i<T; i++){
-        cin>>t;
-        target.insert(t);
+        cin>>x;
+        target[x] = 1;
     }
-    cin>>commands;
-    for(int i=0; i<C; i++){
-        if(commands[i] == 'F'){
-            if(target.find(pos) != target.end()){
-                if(L.find(pos) == L.end()) first[i] = pos;     // only record the first shoot
-                L.insert(pos);
-            }
-        }                                                                                    
-        else if(commands[i] == 'L') pos--;
-        else pos++;
-    }
-    
-    vector<unordered_set<int>> right_valid(5);      // all valid shoot at right
-    vector<unordered_set<int>> already(5);          // the target already be hit -- but it may work when the previous F changes to L or R
-    int ans = L.size();   // the number with the origin commands
-    for(int i=C-1; i>=0; i--){
-        // update L first (pop out the commands[i])
-        if(first.find(i) != first.end()) L.erase(first[i]);
-        if(commands[i] == 'L'){
-            pos++;
-            int cnt1 = L.size() + right_valid[3].size();     // L -> F
-            if(fisrt_shoot(pos) && right_valid[3].find(pos) == right_valid[3].end()) cnt1++;        // check the cur_pos exist target or not
-            int cnt2 = L.size() + right_valid[4].size();     // L -> R
-            ans = max(ans, max(cnt1, cnt2));
-        }else if(commands[i] == 'R'){
-            pos--;
-            int cnt1 = L.size() + right_valid[1].size();     // R -> F
-            if(fisrt_shoot(pos) && right_valid[1].find(pos) == right_valid[1].end()) cnt1++;
-            int cnt2 = L.size() + right_valid[0].size();     // R -> L
-            ans = max(ans, max(cnt1, cnt2));
-        }else{
-            int cnt1 = L.size() + right_valid[1].size();     // F -> L
-            if(fisrt_shoot(pos) && already[1].find(pos) != already[1].end()) cnt1++;
-            int cnt2 = L.size() + right_valid[3].size();     // F -> R
-            if(fisrt_shoot(pos) && already[3].find(pos) != already[3].end()) cnt2++;
-            ans = max(ans, max(cnt1, cnt2));
-        }
+    cin>>c;
+    init();
+    ans = res;
 
-        // after let right_valid not inlcude i
-        if(commands[i] == 'F'){     
-            for(int j=0; j<5; j++){
-                int offset = j-2;
-                if(fisrt_shoot(pos+offset)){
-                    right_valid[j].insert(pos+offset);
-                }else if(target.find(pos+offset) != target.end()){
-                    already[j].insert(pos+offset);        // the target which is hit more than once
-                }
-            }
-        }
-    }
+    l2f();
+    r2f();
+    l2r();
+    r2l();
+    f2l();
+    f2r();
     cout<<ans<<endl;
+    return 0;
 }
 
+
 /*
-有一些情况是压根就到不了 offset[2] 的
-1 5
-2
-FFFFF
+3 5
+0 1 2
+RRFRF
+(3)
 
-ans是0，而不是1
+5 12
+-1 0 1 2 4
+RFRFRFLFLFLF
+(4)
+
+3 6
+-1 0 1
+FRFFLF
+(3)
 
 
-2 7
--2 3
-RRRLLLF
 */
