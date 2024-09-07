@@ -1,6 +1,8 @@
 // dfs 模拟
 // 剪枝不一定要找if条件，3参剪枝也是常见的一种方式
 
+// 存在反复将小罐倒入大罐的情况 -- 还真得用dfs
+
 #include<bits/stdc++.h>
 using namespace std;
 

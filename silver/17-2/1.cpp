@@ -1,69 +1,56 @@
 // 贪心+二分
-// 下面讨论怎么贪心
 
-// t、cows都排序时，贪心的问题
-// 那就是以a为基准排序，
-// 举反例就行：
-// t: 4 6
-// (a,b): (1,7) (3,5)
-// 合理分配下刚好够的，但是以a为基准排序贪心不行
+// 对 end_time 进行排序
+// 有点贪心的意思，对于某一个鸡，如果有多头牛可配对，我们肯定希望让 end_time 小的牛先走
+// 因为从左往右处理过来，它当前机会比其他牛少,其他的牛之后还有机会
 
-// 再进一步分析，先把可行的喂给b小的，问题就解决了
-// 所以贪心应该以b为重，先照顾end_time靠前的
+// 可能你会考虑到，end_time 大的，有可能 start_time 也大，总的机会也不大呀
+// 请考虑如下测试用例
+
+/*
+
+2 2
+1
+3
+1 4
+3 5
+
+ */
+
+// 我们按照 end_time 排序，先处理 (1,3) 然后选取 lower_bound(1)
+// 取到1，然后剩下的 3 就留给(3,5) 了
+// lower_bound 尽可能地往左边找，可以尽可能避免占用
+
 
 #include <bits/stdc++.h>
 using namespace std;
 
-int bis(int a, int b, vector<int>& t){
-    int low=0, high=t.size()-1;
-    while(low<high){
-        int mid = (low+high)/2;
-        if(t[mid]<a){
-            low = mid+1;
-        }else if(t[mid]>b){
-            high = mid-1;
-        }else{
-            // 不直接返回，会有随机性
-            // 人为往左边靠，通过(low<high)结束二分，维持有序
-            // 说白了，lower_bound
-            high = mid;
-        }
-    }
-    return low;
-}
-
-bool cmp(vector<int>& a, vector<int>& b){
-    return a[1]<b[1];
+bool cmp(pair<int,int>& a, pair<int,int>& b){
+    return a.second < b.second;
 }
 
 int main(){
     freopen("helpcross.in", "r", stdin);
     freopen("helpcross.out", "w", stdout);
+    
     int c,n;
     cin>>c>>n;
     vector<int> t(c);
-    for(int i=0; i<c; i++){
-        cin>>t[i];
-    }
+    for(int i=0; i<c; i++) cin >> t[i];
     sort(t.begin(), t.end());
 
-    vector<vector<int>> cows;
-    int a,b;
-    for(int i=0; i<n; i++){
-        cin>>a>>b;
-        cows.push_back({a,b});
-    }
+    vector<pair<int,int>> cows(n);
+    for(int i=0; i<n; i++) cin >> cows[i].first >> cows[i].second;
+    sort(cows.begin(), cows.end(), cmp);
 
-    sort(cows.begin(), cows.end(),cmp);  // 为什么按end_time排看开头注释
-    int ans=0;
-    for(vector<int>& pair : cows){
-        if(t.size()==0)break;
-        a = pair[0];
-        b = pair[1];
-        int idx = bis(a,b,t);
-        if(t[idx]>=a && t[idx]<=b){
-            t.erase(t.begin()+idx);  // 别过于害怕，不是每一个点都被删除的
+    int ans = 0;
+    for(auto &[a,b] : cows){
+        if(t.size() == 0) break;
+        // 拿a取lower_bound(找最左边被含住的)
+        int i = lower_bound(t.begin(), t.end(), a) - t.begin();
+        if(i < t.size() && t[i] <= b){      // a <= t[i] <= b
             ans++;
+            t.erase(t.begin()+i);
         }
     }
     cout<<ans<<endl;
