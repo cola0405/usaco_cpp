@@ -8,7 +8,7 @@ for _ in range(N):
 cows.sort(reverse=True)
  
 answer = 0
-towers = deque([1e100]*min(M, len(cows)))
+towers = deque([1e10]*min(M, len(cows)))
 for cow in cows:
 	if cow + K <= towers[0]:
 		answer += 1
