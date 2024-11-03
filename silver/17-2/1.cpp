@@ -46,7 +46,7 @@ int main(){
     int ans = 0;
     for(auto &[a,b] : cows){
         if(t.size() == 0) break;
-        // 拿a取lower_bound(找最左边被含住的)
+        // 找到大于等于a的最小的
         int i = lower_bound(t.begin(), t.end(), a) - t.begin();
         if(i < t.size() && t[i] <= b){      // a <= t[i] <= b
             ans++;
