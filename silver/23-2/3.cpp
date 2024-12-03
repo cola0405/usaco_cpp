@@ -16,17 +16,17 @@ unordered_map<int, deque<vector<int>>> fl;      // graph
 vector<int> ans(2e5+1, 2e9);
 vector<int> a(2e5+1);
 
-void dfs(int cur_time, int f, int cur){
+void dfs(int cur_time, int previous, int cur){     // cur: current city
     ans[cur] = min(ans[cur], cur_time);
     while(fl[cur].size()){
         auto x = fl[cur].front();
         int t1=x[0], t2=x[1], t=x[2];
         int depature_time = cur_time;
-        if(f != -1) depature_time += a[cur];       // except the first flight
+        if(previous != -1) depature_time += a[cur];       // add layover time, except the first flight
         if(depature_time <= t1){
             fl[cur].pop_front();                   // optimization
             dfs(t2, cur, t);
-        } else return;      // after sorting, 
+        } else return;      // after sorting, current t1 is the latest flight, there is no need to check the following flights
     }
 }
 
