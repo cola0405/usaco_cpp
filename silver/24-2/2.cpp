@@ -98,18 +98,14 @@ void solve(){
     cout<<ans<<endl;
     if(p == 1 || ans == 0) return;
 
-    if(t[A].size() < t[B].size()) swap(A, B);   // make A the longer string, for the next two operations
-    
     // make sure the end of tube-A and tube-B are different
     if(t[A].size() > 1 && t[A].back() == t[B].back()) pour(A, B);
-
-    // if the longer A is smaller than 1, then we don't need to consider B
     if(t[A].size() > 1 && t[A].back() == t[A].front()){   
-        pour(A,C);
+        pour(A,C);          // the longer to C makes more sense
         clear_tube(B);      // clear another tube first
         clear_tube(A);
     }else{
-        clear_tube(A);      // clear current tube first
+        clear_tube(A);      // clear current tube first1
         clear_tube(B);
     }
 
