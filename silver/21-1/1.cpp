@@ -1,7 +1,7 @@
 // union-find + graph
 
 // after all k operation, some cows will stay in different places or stay in same place
-// if the cow stay in the same place, which means the cow will only visit the places of the loop
+// if the cow stay in the same place, which means the cow will only visit the places of the loop 
 // if not, the visted place should also include other cows' places in the same union block
 
 #include <bits/stdc++.h>
@@ -39,14 +39,17 @@ int main() {
     }
 
     // build union-find array
-    for(int i=1; i<=n; i++) root[i] = find(cow[i]);     // check the end situation
+    // 这个并查集是为了区分:（k次操作后）
+    // 1.留在原本位置的节点 
+    // 2.走开的节点
+    for(int i=1; i<=n; i++) root[i] = find(cow[i]);
 
     // reset cow[]
     for(int i=1; i<=n; i++) cow[i] = i;
 
     // count the places for each block based on the union-find
     for(auto &[a,b] : op){
-        s[find(cow[a])].insert(b);
+        s[find(cow[a])].insert(b);      // 去统计k次操作后，留在原地的节点走过那些地方
         s[find(cow[b])].insert(a);
         swap(cow[a], cow[b]);
     }

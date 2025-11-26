@@ -1,50 +1,72 @@
-# 对于某个品种的牛，它肯定要不往左找最近的，要不往右找最近的
-# 我们可以基于此建边，每个牛最多有两天边，那么总边数就是 2*n*k
-# 使用SPFA求最短路即可
+from collections import deque
 
-'''
-12 23 35 54
-1 2 3 2 5 3 4
+# 定义一个常量 N，用于数组大小，确保有足够空间存储节点信息
+N = 51005
 
-最优解: 1 -> 2 -> 3 -> 5 -> 4
-可以证明不是单纯看最右
-单纯看最左也不行，考虑此测试用例: 1 5 2 3 2 5 3 4
-(选左边的5也不好使)
+# 定义更新函数，用于更新节点的距离信息并将节点加入队列
+def update(u, v, w):
+    global dis, q
+    # 如果目标节点 v 已经被访问过（dis[v] 不为 0），则不做处理直接返回
+    if dis[v]:
+        return
+    # 如果边权 w 为 0，将目标节点 v 插入到队列头部，并且目标节点的距离等于当前节点的距离
+    if w == 0:
+        q.appendleft(v)
+        dis[v] = dis[u]
+    # 如果边权 w 不为 0，将目标节点 v 插入到队列尾部，并且目标节点的距离等于当前节点的距离加 1
+    else:
+        q.append(v)
+        dis[v] = dis[u] + 1
 
-'''
+# 主函数部分，开始处理输入和执行 BFS 算法
+n, k = map(int, input().split())
+# 读取每头奶牛的颜色，下标从 1 开始，前面补 0 是为了方便从 1 开始索引
+b = [0] + list(map(int, input().split()))
+# 初始化颜色邻接矩阵 S，用于表示不同颜色之间是否可以传递消息
+S = [[False] * (k + 1) for _ in range(k + 1)]
+# 初始化距离数组 dis，用于记录每个节点到起点的最短距离
+dis = [0] * (50 * N)
+# 初始化双端队列 q，用于 BFS 算法
+q = deque()
 
-from collections import defaultdict, deque
-n,k = map(int, input().split())
-b = list(map(int, input().split()))
-S = [[int(c) for c in input()] for _ in range(k)]
+# 读取矩阵 S 的每一行
+for i in range(1, k + 1):
+    row = input().strip()
+    # 读取矩阵 S 的每一列元素，并将其转换为布尔值存储在 S 矩阵中
+    for j in range(1, k + 1):
+        S[i][j] = bool(int(row[j - 1]))
 
-d = defaultdict(list)       # record the index of each breed
-for i in range(n):
-    d[b[i]].append(i)
+# 将起点的距离设为 1
+dis[1] = 1
+# 将起点加入队列
+q.append(1)
 
-dis = [1e9 for _ in range(n)]
-dis[0] = 0
-q = deque([0])  # index of the node
-vis = [0]*(k+1)
+# 开始 BFS 遍历
 while q:
-    i = q.popleft()
-    if vis[b[i]]: continue
-    vis[b[i]] = 1
-    for nxt in range(1,k+1):    # next breed
-        if S[b[i]-1][nxt-1] and len(d[nxt]) > 0:
-            l,r = 0,len(d[nxt])-1
-            while l+1 < len(d[nxt]) and d[nxt][l+1] < i:
-                l += 1
-            while r-1 >= 0 and d[nxt][r-1] > i:
-                r -= 1
+    # 从队列中取出一个节点
+    x = q.popleft()
+    # 如果 x 是原图中的节点（x <= n）
+    if x <= n:
+        # 调用 update 函数将其连接到第 b[x] 层的 x 号节点，边权为 0
+        update(x, b[x] * n + x, 0)
+    # 如果 x 是分层图中的节点（x > n）
+    else:
+        # 计算 x 所在的层
+        nx = (x - 1) // n
+        # 计算 x 在该层的位置
+        ny = (x - 1) % n + 1
+        # 如果当前位置不在该层的第一个位置
+        if ny > 1:
+            # 调用 update 函数将 x - 1 加入队列，边权为 1
+            update(x, x - 1, 1)
+        # 如果当前位置不在该层的最后一个位置
+        if ny < n:
+            # 调用 update 函数将 x + 1 加入队列，边权为 1
+            update(x, x + 1, 1)
+        # 如果当前层的颜色可以向第 b[ny] 颜色的节点传递消息
+        if S[nx][b[ny]]:
+            # 调用 update 函数将 ny 加入队列，边权为 0
+            update(x, ny, 0)
 
-            if i - d[nxt][l] < d[nxt][r] - i:
-                dis[nxt] = min(dis[nxt], dis[i] + abs(i - d[nxt][l]))
-                q.append(d[nxt][l])
-            else:
-                dis[nxt] = min(dis[nxt], dis[i] + abs(d[nxt][r] - i))
-                q.append(d[nxt][r])
-print(dis[-1])
-                
-            
-    
+# 输出从节点 1 到节点 N 的最短距离，由于初始距离设为 1，所以要减 1
+print(dis[n] - 1)

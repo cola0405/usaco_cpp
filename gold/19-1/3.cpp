@@ -6,6 +6,7 @@
 1.如果最短路不止一种选择，要选择字典序最小的路径
 2.牛不会绕路去走捷径，意思就是在添加捷径之前牛走的最短路是已经确定了的，牛只会走最短路上顺路可以走的捷径
 3.Python的 dfs 会超递归层数
+4.捷径是从 1 到某一节点的
 
 解题步骤：
 1.先跑一遍 dijastra 把最短路径确认下来
@@ -30,6 +31,7 @@ struct Edge {
 
 
 // dfs 统计最短路中各个节点有多少牛经过
+// x 表示当前到了节点 x
 ll dfs(unordered_map<ll, vector<ll>>& dja_g, vector<ll>& passing_cow, vector<bool>& vis, ll x) {
     if (vis[x]) return passing_cow[x];
     vis[x] = true;
@@ -47,21 +49,21 @@ int main() {
     ll N, M, T;
     cin >> N >> M >> T;
 
-    vector<ll> c(N + 1);
-    for (ll i = 1; i <= N; ++i) {cin >> c[i];}
+    vector<ll> passing_cow(N + 1);      // 节点 i 会经过的牛的数量
+    for (ll i = 1; i <= N; ++i) {cin >> passing_cow[i];}
 
     unordered_map<ll, vector<Edge>> g;
     for (ll i = 0; i < M; ++i) {
         ll a, b, t;
         cin >> a >> b >> t;
-        g[a].push_back({b, t});
+        g[a].push_back({b, t});     // a 到 b 的时间为 t
         g[b].push_back({a, t});
     }
 
-    vector<ll> min_time(N+1, LONG_MAX);
+    vector<ll> min_time(N+1, LONG_MAX);     // 节点 i 到 1 的最短时间
     vector<bool> vis(N+1, false);
     min_time[1] = 0;
-    unordered_map<ll, vector<ll>> dja_g;
+    unordered_map<ll, vector<ll>> dja_g;    // 最短路径的图
     priority_queue<pair<ll, pair<ll, ll>>> q;
     q.push({0, {-1, 1}});
 
@@ -74,7 +76,7 @@ int main() {
 
         if (vis[node]) continue;
         vis[node] = true;
-        dja_g[last].push_back(node);
+        dja_g[last].push_back(node);        // 上一个节点 -> 当前节点（其实是从节点 1 开始 dfs 的路径）
 
         for (const Edge& edge : g[node]) {
             ll nxt = edge.destination;
@@ -86,9 +88,8 @@ int main() {
         }
     }
 
-    vector<ll> passing_cow = c;
     vis.assign(N+1, false);
-    dfs(dja_g, passing_cow, vis, 1);
+    dfs(dja_g, passing_cow, vis, 1);        // 从 1 节点开始往后续节点dfs，节点 i 的其他子节点总共有多少牛，会通过递归汇总到 passing_cow[i]
 
     ll max_reduce = 0;
     for (ll i = 2; i <= N; ++i) {
